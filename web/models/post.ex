@@ -10,6 +10,14 @@ defmodule PhoenixBlog.Post do
     timestamps()
   end
 
+  def count_comments(query) do 
+    from p in query, 
+      group_by: p.id,
+      left_join: c in assoc(p, :comments),
+      select: {p, count(c.id)}
+  end
+
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
